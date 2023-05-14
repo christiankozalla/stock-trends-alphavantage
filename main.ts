@@ -6,7 +6,7 @@
  * D. Create PDF report that lists the trending stocks in a table
  */
 
-import { series, indicators } from "./alphavantage/client.ts";
+import { indicators, series } from "./alphavantage/client.ts";
 import nasdaqSymbols from "./ndx.json" assert { type: "json" };
 
 const aaplSymbol = nasdaqSymbols.find((symbol) => symbol === "AAPL") || "";
@@ -14,6 +14,10 @@ const aapl = await series.get(aaplSymbol, "TIME_SERIES_WEEKLY_ADJUSTED");
 
 console.log(Object.keys(aapl));
 
-const aaplSma = await indicators.get(aaplSymbol, { indicator: "MACD", period: 12, length: 26, interval: "daily" });
+const aaplSma = await indicators.get(aaplSymbol, {
+  indicator: "MACD",
+  period: 12,
+  length: 26,
+  interval: "daily",
+});
 console.log(Object.keys(aaplSma));
-
