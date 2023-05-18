@@ -1,8 +1,12 @@
 import { config } from "https://deno.land/x/dotenv@v3.2.2/mod.ts";
+import type { RSIResponse } from "../calculation/index.ts";
+import { calculate } from "../calculation/index.ts";
 
 const ALPHAVANTAGE_API_KEY = config().ALPHAVANTAGE_API_KEY;
 
-type AVSeries = "TIME_SERIES_DAILY_ADJUSTED" | "TIME_SERIES_WEEKLY_ADJUSTED";
+export type AVSeries =
+  | "TIME_SERIES_DAILY_ADJUSTED"
+  | "TIME_SERIES_WEEKLY_ADJUSTED";
 
 type PeriodData = {
   "1. open": string;
@@ -14,31 +18,31 @@ type PeriodData = {
   "7. dividend amount": string;
 };
 
-type MetaData = {
+export type MetaData = {
   "1. Information": string;
   "2. Symbol": string;
   "3. Last Refreshed": string;
   "5. Time Zone": string;
 };
 
-interface AVSeriesResponse {
+export type AVSeriesResponse = {
   "TIME_SERIES_DAILY_ADJUSTED": {
     "Meta Data": MetaData & {
       "4. Output Size": string;
     };
     "Time Series (Daily)": {
-      [day: string]: PeriodData;
+      [date: string]: PeriodData;
     };
   };
   "TIME_SERIES_WEEKLY_ADJUSTED": {
     "Meta Data": MetaData;
     "Weekly Adjusted Time Series": {
-      [day: string]: PeriodData & {
+      [date: string]: PeriodData & {
         "8. split coefficient": string;
       };
     };
   };
-}
+};
 
 export const series = {
   async get<T extends AVSeries>(
@@ -56,7 +60,7 @@ export const series = {
     }
   },
 };
-type AVIndicators = "SMA" | "EMA" | "MACD";
+type AVIndicators = "SMA" | "EMA" | "MACD" | "RSI";
 
 type SMAResponse = {
   "Meta Data": MetaData;
@@ -91,6 +95,7 @@ type AVIndicatorsResponse = {
   "SMA": SMAResponse;
   "EMA": EMAResponse;
   "MACD": MACDResponse;
+  "RSI": RSIResponse;
 };
 
 type GetIndicatorParams = {
@@ -101,24 +106,34 @@ type GetIndicatorParams = {
 };
 
 export const indicators = {
+  // To get the correct return type, you must use indicators.get like this:
+  // const aaplSma = await indicators.get<"SMA">(aaplSymbol, ...
   async get<T extends AVIndicators>(
     symbol: string,
-    { indicator, period, length = 0, interval = "daily" }: GetIndicatorParams,
+    { indicator, period, interval = "daily" }: GetIndicatorParams,
   ): Promise<AVIndicatorsResponse[T]> {
-    try {
-      const url =
-        `https://www.alphavantage.co/query?function=${indicator}&symbol=${symbol}&interval=${interval}&time_period=${period}&series_type=close&apikey=${ALPHAVANTAGE_API_KEY}`;
-      const response = await fetch(url);
-      const json = await response.json();
-      const dataKey = length &&
-        Object.keys(json).find((key) => key.includes(indicator));
-      if (dataKey) {
-        json[dataKey].slice(0, length);
-        return json;
+    if (indicator === "RSI") {
+      try {
+        const seriesData = await series.get(
+          symbol,
+          interval === "daily"
+            ? "TIME_SERIES_DAILY_ADJUSTED"
+            : "TIME_SERIES_WEEKLY_ADJUSTED",
+        );
+        return calculate.rsi(seriesData, { period }) as AVIndicatorsResponse[T];
+      } catch (e) {
+        return e;
       }
-      return json;
-    } catch (e) {
-      return e;
+    } else {
+      try {
+        const url =
+          `https://www.alphavantage.co/query?function=${indicator}&symbol=${symbol}&interval=${interval}&time_period=${period}&series_type=close&apikey=${ALPHAVANTAGE_API_KEY}`;
+        const response = await fetch(url);
+        const json: AVIndicatorsResponse[T] = await response.json();
+        return json;
+      } catch (e) {
+        return e;
+      }
     }
   },
 };
