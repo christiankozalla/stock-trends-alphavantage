@@ -7,8 +7,7 @@ const aapl = await series.get(aaplSymbol, "TIME_SERIES_DAILY_ADJUSTED");
 console.log(Object.keys(aapl));
 
 
-const aaplSma = await indicators.get<"SMA">(aaplSymbol, {
-  indicator: "SMA",
+const aaplSma = await indicators.get("SMA", aaplSymbol, {
   period: 12,
   length: 26,
   interval: "daily",

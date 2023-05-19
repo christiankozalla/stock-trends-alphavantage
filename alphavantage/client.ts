@@ -99,18 +99,16 @@ type AVIndicatorsResponse = {
 };
 
 type GetIndicatorParams = {
-  indicator: AVIndicators;
   period: number;
   length?: number;
   interval?: "daily" | "weekly";
 };
 
 export const indicators = {
-  // To get the correct return type, you must use indicators.get like this:
-  // const aaplSma = await indicators.get<"SMA">(aaplSymbol, ...
   async get<T extends AVIndicators>(
+    indicator: T,
     symbol: string,
-    { indicator, period, interval = "daily" }: GetIndicatorParams,
+    { period, interval = "daily" }: GetIndicatorParams,
   ): Promise<AVIndicatorsResponse[T]> {
     if (indicator === "RSI") {
       try {
