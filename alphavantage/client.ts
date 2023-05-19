@@ -98,17 +98,15 @@ type AVIndicatorsResponse = {
   "RSI": RSIResponse;
 };
 
-type GetIndicatorParams = {
-  period: number;
-  length?: number;
-  interval?: "daily" | "weekly";
-};
-
 export const indicators = {
   async get<T extends AVIndicators>(
-    indicator: T,
     symbol: string,
-    { period, interval = "daily" }: GetIndicatorParams,
+    { indicator, period, interval = "daily" }: {
+      indicator: T;
+      period: number;
+      length?: number;
+      interval?: "daily" | "weekly";
+    },
   ): Promise<AVIndicatorsResponse[T]> {
     if (indicator === "RSI") {
       try {
