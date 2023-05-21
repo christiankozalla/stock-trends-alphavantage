@@ -1,3 +1,4 @@
+import { startServer } from "./web/server.ts";
 import { indicators, series } from "./alphavantage/client.ts";
 import nasdaqSymbols from "./ndx.json" assert { type: "json" };
 
@@ -14,3 +15,5 @@ const aaplSma = await indicators.get(aaplSymbol, {
   interval: "daily",
 });
 console.log(Object.keys(aaplSma));
+
+startServer();
