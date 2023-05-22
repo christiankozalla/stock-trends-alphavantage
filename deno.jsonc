@@ -2,5 +2,9 @@
   "tasks": {
     "dev": "deno run --watch --allow-net --allow-env --allow-read main.ts",
     "update-lock": "deno cache --lock=deno.lock --lock-write main.ts"
+  },
+  "imports": {
+    "react": "https://esm.sh/react@18.2.0?dts",
+    "react-dom/server": "https://esm.sh/react-dom@18.2.0/server"
   }
 }

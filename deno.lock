@@ -13,44 +13,17 @@
     "https://deno.land/std@0.188.0/async/tee.ts": "47e42d35f622650b02234d43803d0383a89eb4387e1b83b5a40106d18ae36757",
     "https://deno.land/std@0.188.0/http/server.ts": "1b23463b5b36e4eebc495417f6af47a6f7d52e3294827a1226d2a1aab23d9d20",
     "https://deno.land/x/dotenv@v3.2.2/mod.ts": "077b48773de9205266a0b44c3c3a3c3083449ed64bb0b6cc461b95720678d38e",
-    "https://deno.land/x/dotenv@v3.2.2/util.ts": "693730877b13f8ead2b79b2aa31e2a0652862f7dc0c5f6d2f313f4d39c7b7670"
-  },
-  "npm": {
-    "specifiers": {
-      "react": "react@18.2.0",
-      "react-dom": "react-dom@18.2.0_react@18.2.0"
-    },
-    "packages": {
-      "js-tokens@4.0.0": {
-        "integrity": "sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==",
-        "dependencies": {}
-      },
-      "loose-envify@1.4.0": {
-        "integrity": "sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==",
-        "dependencies": {
-          "js-tokens": "js-tokens@4.0.0"
-        }
-      },
-      "react-dom@18.2.0_react@18.2.0": {
-        "integrity": "sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==",
-        "dependencies": {
-          "loose-envify": "loose-envify@1.4.0",
-          "react": "react@18.2.0",
-          "scheduler": "scheduler@0.23.0"
-        }
-      },
-      "react@18.2.0": {
-        "integrity": "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==",
-        "dependencies": {
-          "loose-envify": "loose-envify@1.4.0"
-        }
-      },
-      "scheduler@0.23.0": {
-        "integrity": "sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==",
-        "dependencies": {
-          "loose-envify": "loose-envify@1.4.0"
-        }
-      }
-    }
+    "https://deno.land/x/dotenv@v3.2.2/util.ts": "693730877b13f8ead2b79b2aa31e2a0652862f7dc0c5f6d2f313f4d39c7b7670",
+    "https://esm.sh/react-dom@18.2.0/server": "e0af7dc7f56f668efec92d41a65bca287462ffd923b141e5fd91566e634df797",
+    "https://esm.sh/react@18.2.0?dts": "742d8246041966ba1137ec8c60888c35882a9d2478bce63583875f86c1e3687c",
+    "https://esm.sh/stable/react@18.2.0/deno/react.mjs": "a5a73ee24acca4744ee22c51d9357f31968d1f684ce253bde222b4e26d09f49f",
+    "https://esm.sh/v118/@types/prop-types@15.7.5/index.d.ts": "6a386ff939f180ae8ef064699d8b7b6e62bc2731a62d7fbf5e02589383838dea",
+    "https://esm.sh/v118/@types/react@18.2.6/global.d.ts": "549df62b64a71004aee17685b445a8289013daf96246ce4d9b087d13d7a27a61",
+    "https://esm.sh/v118/@types/react@18.2.6/index.d.ts": "2ef11908f0e5f1cae0a42694e5e38852c976ca99a5d7eecfb71ed6a1187736c7",
+    "https://esm.sh/v118/@types/scheduler@0.16.3/tracing.d.ts": "f5a8b384f182b3851cec3596ccc96cb7464f8d3469f48c74bf2befb782a19de5",
+    "https://esm.sh/v118/csstype@3.1.2/index.d.ts": "4c68749a564a6facdf675416d75789ee5a557afda8960e0803cf6711fa569288",
+    "https://esm.sh/v122/@types/react-dom@18.2.4/client.d.ts": "b3b8eed836d40b2e2b9ce1ae19ea6d5ceead0a26780d420a43670a3bbb3c4ff4",
+    "https://esm.sh/v122/@types/react-dom@18.2.4/server~.d.ts": "6ee8a41ede4011c5c64229708421feb3dab2fc03a65b362de58cfb5e5995362a",
+    "https://esm.sh/v122/react-dom@18.2.0/deno/server.js": "687d1b8ca3a73bdf42750098db291810fcb4b21c1b8761c66cc94ac9334e71a8"
   }
 }

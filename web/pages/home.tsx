@@ -1,5 +1,5 @@
-import React from 'npm:react';
-import { renderToStaticMarkup } from 'npm:react-dom/server';
+import React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 
 interface HomeProps { name: string }
 
