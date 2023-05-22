@@ -1,5 +1,6 @@
 import { config } from "https://deno.land/x/dotenv@v3.2.2/mod.ts";
 import { serve } from "https://deno.land/std@0.188.0/http/server.ts";
+import { HomePage } from "./pages/home.tsx";
 
 const PORT = Number(config().SERVER_PORT) ||
   Number(Deno.env.get("SERVER_PORT")) || 3000;
@@ -61,8 +62,10 @@ const routes: Route[] = [
   {
     method: "GET",
     path: "/",
-    handler: (req: RequestWithContext) => {
-      return new Response("Hello you!" + JSON.stringify(req, null, 2));
+    handler: (_req: RequestWithContext) => {
+      return new Response(HomePage({ name: "Chrissy Kay" }), {
+        headers: { "Content-Type": "text/html" },
+      });
     },
   },
   {
