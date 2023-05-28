@@ -4,13 +4,18 @@ import type {
   MetaData,
 } from "../alphavantage/client.ts";
 
+const rsiKey = "Technical Analysis: RSI";
+
+export type RSIBasis = {
+  [date: string]: {
+    RSI: number;
+    SMA: number;
+  };
+};
+
 export type RSIResponse = {
   "Meta Data": MetaData;
-  "Technical Analysis: RSI": {
-    [date: string]: {
-      "RSI": string;
-    };
-  };
+  [rsiKey]: RSIBasis;
 };
 
 function isDailySeries(
@@ -22,8 +27,6 @@ function isDailySeries(
 type CalculateRSIParams = {
   period: number;
 };
-
-const rsiKey = "Technical Analysis: RSI";
 
 function sum(...summands: number[]) {
   return summands.reduce((sum, summand) => sum + Math.abs(summand), 0);
@@ -46,12 +49,14 @@ export const calculate = {
     } else {
       entries = Object.entries(input["Weekly Adjusted Time Series"]);
     }
-
     const differences = [];
-    for (let n = entries.length - 1; n > 0; n--) {
+    const pastRSIs = [];
+    let prevRSUp;
+    let prevRSDown;
+    for (let n = entries.length - 2; n >= 0; n--) {
       const [_date, data] = entries[n];
       const { "4. close": close } = data;
-      const previous = entries[n - 1];
+      const previous = entries[n + 1];
       const { "4. close": previousClose } = previous[1];
       const difference = Number(close) - Number(previousClose);
       differences.push(difference);
@@ -61,17 +66,36 @@ export const calculate = {
         // Fill up differences array with period length
         continue;
       } else {
-        const RSUp = sum(...differences.filter((d) => d >= 0)) / period;
-        const RSDown = sum(...differences.filter((d) => d <= 0)) / period;
-        const RS = RSUp / RSDown;
-        const RSI = (100 - (100 / (1 + RS))).toString();
-        const [date, _] = entries[n];
-        result[rsiKey][date] = { RSI };
+        const gains = differences.filter((d) => d >= 0);
+        const losses = differences.filter((d) => d < 0);
+        if (gains.length + losses.length !== period) {
+          console.log("WRONG SUM", gains.length + losses.length);
+        }
+        const gain = difference > 0 ? difference : 0;
+        const loss = difference < 0 ? Math.abs(difference) : 0;
+        const RSUp: number = prevRSUp ? ((prevRSUp * (period - 1) + gain) / period) : sum(...gains) / gains.length;
+        const RSDown: number = prevRSDown ? ((prevRSDown * (period - 1) + loss) / period)  : sum(...losses) / losses.length;
 
+        prevRSUp = RSUp;
+        prevRSDown = RSDown;
+
+        const RS = RSUp / RSDown;
+        const RSI = 100 - (100 / (1 + RS));
+        const [date, _] = entries[n];
+
+        pastRSIs.push(RSI);
         differences.shift();
+        if (pastRSIs.length === period) {
+          const SMA = pastRSIs.reduce((sum, summand) => sum + summand, 0) /
+            period;
+          result[rsiKey][date] = { RSI, SMA };
+          pastRSIs.shift();
+        } else {
+          // Fill up pastRSIs array with period length
+          continue;
+        }
       }
     }
-
     return result;
   },
 };

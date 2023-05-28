@@ -1,6 +1,5 @@
 import { config } from "https://deno.land/x/dotenv@v3.2.2/mod.ts";
-import type { RSIResponse } from "../calculation/index.ts";
-import { calculate } from "../calculation/index.ts";
+import { calculate, type RSIResponse } from "../calculation/indicators.ts";
 
 const ALPHAVANTAGE_API_KEY = config().ALPHAVANTAGE_API_KEY;
 
@@ -104,7 +103,6 @@ export const indicators = {
     { indicator, period, interval = "daily" }: {
       indicator: T;
       period: number;
-      length?: number;
       interval?: "daily" | "weekly";
     },
   ): Promise<AVIndicatorsResponse[T]> {
